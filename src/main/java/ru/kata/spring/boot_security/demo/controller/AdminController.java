@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserImplem;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -28,13 +29,16 @@ public class AdminController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/admin")
-    public String firstPage(ModelMap modelMap){
+    public String firstPage(Principal principal, ModelMap modelMap){
         modelMap.addAttribute("usersList", returnList());
+        modelMap.addAttribute("username", principal.getName());
+        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
+                .getName()).stringOfRoles());
         return "admin";
     }
 
     @GetMapping("/admin/delete")
-    public String secondPage(HttpServletRequest httpServletRequest, ModelMap modelMap){
+    public String secondPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
         Long id = Long.valueOf(httpServletRequest.getParameter("id"));
         System.out.println(id);
         try{
@@ -43,19 +47,23 @@ public class AdminController {
 
         }
         modelMap.addAttribute("usersList", returnList());
-        return "admin";
+        modelMap.addAttribute("username", principal.getName());
+        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
+                .getName()).stringOfRoles());        return "admin";
     }
 
     @PostMapping (value = "/admin/add")
-    public String thirdPage(HttpServletRequest httpServletRequest, ModelMap modelMap){
+    public String thirdPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
         User user = createUser(httpServletRequest);
         userImplem.add(user);
         modelMap.addAttribute("usersList", returnList());
-        return "admin";
+        modelMap.addAttribute("username", principal.getName());
+        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
+                .getName()).stringOfRoles());        return "admin";
     }
 
     @PostMapping("/admin/update")
-    public String fourthPage(HttpServletRequest httpServletRequest, ModelMap modelMap){
+    public String fourthPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
         User user = createUser(httpServletRequest);
         user.setId(Long.valueOf(httpServletRequest.getParameter("id")));
         try{
@@ -64,6 +72,9 @@ public class AdminController {
 
         }
         modelMap.addAttribute("usersList", returnList());
+        modelMap.addAttribute("username", principal.getName());
+        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
+                .getName()).stringOfRoles());
         return "admin";
     }
 

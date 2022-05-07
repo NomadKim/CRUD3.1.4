@@ -8,10 +8,12 @@
             height: 1000px;
         }
     </style>
+
 </head>
 <body>
 
-<div th:fragment="logout">
+<div class="container-fluid" th:fragment="logout (user, role)">
+    <p th:text="${user} + ' with roles: ' + ${role}"></p>
     <a href="/logout">logout</a>
 </div>
 
