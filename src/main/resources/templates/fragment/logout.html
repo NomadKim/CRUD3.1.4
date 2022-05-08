@@ -2,19 +2,26 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <style>
-        body{
-            height: 1000px;
-        }
-    </style>
-
 </head>
 <body>
 
-<div class="container-fluid" th:fragment="logout (user, role)">
-    <p th:text="${user} + ' with roles: ' + ${role}"></p>
-    <a href="/logout">logout</a>
+<div class="row head" th:fragment="logout (user, role)">
+    <div class="col-sm-11 sm-10 font-weight-bolder">
+        <h5 th:text="${user}">
+        </h5>
+        <h5><span>&nbsp;&nbsp;with roles:&nbsp;&nbsp; </span>
+        </h5>
+        <h5 th:text="${role}" class="roles">
+        </h5>
+    </div>
+    <div class="col-sm-1 sm-2 linkinside text-right"><h5><a href="/logout">Logout</a></h5></div>
+</div>
+
+<div class="col-sm-2 bodylinks" th:fragment = "sidemenu (roles)" >
+    <div class="div-insede-side-menu" th:each = "role : ${roles}">
+        <a href="/admin" th:if = "${role.getRole()} == 'ROLE_ADMIN'"><div class="admin-page pages" >Admin</div></a>
+        <a href="/user" th:if = "${role.getRole()} == 'ROLE_USER'"><div class="user-page pages" >User</div></a>
+    </div>
 </div>
 
 </body>

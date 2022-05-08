@@ -4,13 +4,19 @@
     <title>Spring Security Example</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <style>
+        .user-page{
+            background: blue;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
-<div th:replace="fragment/logout :: logout"></div>
-<h1>User, welcome spring boot security page!</h1>
+<!--<div th:replace="fragment/logout :: logout"></div>-->
+<h1>User Panel</h1>
 
-<table border="2">
+<table class="table-striped">
     <thead>
     <th>Id</th>
     <th>First Name</th>

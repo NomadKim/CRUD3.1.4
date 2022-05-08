@@ -30,8 +30,8 @@ public class UserDaoImplementation implements UserDaoInterface {
     @Override
     @Transactional
     public void update(User user) {
-        User user2 = (User)entityManager.createQuery("select users from User users where users.id = '" +
-                user.getId() +"'").getResultList().get(0);
+        User user2 = (User) entityManager.createQuery("select users from User users where users.id = '" +
+                user.getId() + "'").getResultList().get(0);
         entityManager.detach(user2);
         user2.setFirstName(user.getFirstName());
         user2.setLastName(user.getLastName());

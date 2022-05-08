@@ -2,19 +2,18 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserImplem;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,53 +27,38 @@ public class AdminController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @GetMapping("/admin")
     public String firstPage(Principal principal, ModelMap modelMap){
-        modelMap.addAttribute("usersList", returnList());
-        modelMap.addAttribute("username", principal.getName());
-        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
-                .getName()).stringOfRoles());
+        receiveModelForPage(principal, modelMap);
         return "admin";
     }
 
-    @GetMapping("/admin/delete")
-    public String secondPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
-        Long id = Long.valueOf(httpServletRequest.getParameter("id"));
-        System.out.println(id);
-        try{
-            userImplem.delete(id);
-        }catch (Exception e){
-
-        }
-        modelMap.addAttribute("usersList", returnList());
-        modelMap.addAttribute("username", principal.getName());
-        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
-                .getName()).stringOfRoles());        return "admin";
+    @GetMapping("/admin/delete/{id}")
+    public String secondPage(Principal principal, @PathVariable String id,
+                             ModelMap modelMap){
+        Long mainId = Long.valueOf(id);
+        userImplem.delete(mainId);
+        receiveModelForPage(principal, modelMap);
+        return "admin";
     }
 
     @PostMapping (value = "/admin/add")
     public String thirdPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
         User user = createUser(httpServletRequest);
         userImplem.add(user);
-        modelMap.addAttribute("usersList", returnList());
-        modelMap.addAttribute("username", principal.getName());
-        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
-                .getName()).stringOfRoles());        return "admin";
+        receiveModelForPage(principal, modelMap);
+        return "admin";
     }
 
     @PostMapping("/admin/update")
     public String fourthPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
         User user = createUser(httpServletRequest);
         user.setId(Long.valueOf(httpServletRequest.getParameter("id")));
-        try{
-            userImplem.update(user);
-        }catch (Exception e){
 
-        }
-        modelMap.addAttribute("usersList", returnList());
-        modelMap.addAttribute("username", principal.getName());
-        modelMap.addAttribute("roles", userImplem.getUserByUsername(principal
-                .getName()).stringOfRoles());
+            userImplem.update(user);
+
+        receiveModelForPage(principal, modelMap);
         return "admin";
     }
 
@@ -85,12 +69,12 @@ public class AdminController {
 
     private User createUser(HttpServletRequest httpServletRequest){
         Set<Role> roles = null;
-        if(httpServletRequest.getParameter("user_check") != null &&
-                httpServletRequest.getParameter("admin_check") != null){
+        String[] rolesString = httpServletRequest.getParameterValues("roles");
+        if(rolesString.length == 2){
             roles = userImplem.receiveRoles(3);
-        }else if(httpServletRequest.getParameter("user_check") != null){
+        }else if(rolesString[0] == "USER"){
             roles = userImplem.receiveRoles(2);
-        }else if(httpServletRequest.getParameter("admin_check") != null){
+        }else if(rolesString[0] == "ADMIN"){
             roles = userImplem.receiveRoles(1);
         } else {
             roles = userImplem.receiveRoles(2);
@@ -108,17 +92,31 @@ public class AdminController {
         return user;
     }
 
+    public void receiveModelForPage(Principal principal, ModelMap modelMap){
+        User user  = userImplem.getUserByUsername(principal.getName());
+        Set<Role> sendRoles = new LinkedHashSet<>();
+        if(user.getRoles().size() == 2){
+            sendRoles.add(new Role("ROLE_ADMIN"));
+            sendRoles.add(new Role("ROLE_USER"));
+        } else {
+            sendRoles.addAll(user.getRoles());
+        }
+        modelMap.addAttribute("usersList", returnList());
+        modelMap.addAttribute("username", principal.getName());
+        modelMap.addAttribute("roles", user.stringOfRoles());
+        modelMap.addAttribute("sidemenuroles", sendRoles);
+    }
+
 //    @GetMapping("/")
-//    public String mainPage(){
-//        User user = new User("admin",
-//                "da",
+//    public String returnIndex(){
+//        User user = new User("ds",
+//                "sd",
 //                32,
-//                "$2a$12$H5J9Tbf5NoBfdeigxP0DHe8Hi/.KP53G/NSpo0ECZqhZnYjOdEbVO",
+//                passwordEncoder.encode("100"),
 //                userImplem.receiveRoles(3),
 //                "admin6");
 //        user.setId(6l);
-//        userImplem.add(user);
+//        userImplem.update(user);
 //        return "index";
-//
 //    }
 }
