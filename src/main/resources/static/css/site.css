@@ -1,7 +1,4 @@
-body{
-    background: #eee;
-    height:100vh;
-}
+
 .head{
     height: 7%;
     background: black;
@@ -81,9 +78,3 @@ form input{
     margin-bottom: 20px;
     margin-left: 32%;
 }
-select.form-control[multiple] {
-    height: 51px;
-    margin-left: 32%;
-    width: 184px;
-}
-
