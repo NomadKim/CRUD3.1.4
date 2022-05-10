@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="modal fade" id="myModal" th:fragment = "modalView">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Edit user</h4>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="updateForm" action="/admin/update" method="post">
+                    <label>ID</label><br/><input type="number" value="ID" name="id" min="1" required/>
+                    <label>First name</label><br/><input type="text" value="First Name" name="first_name" required/><br/>
+                    <label>Last name</label><br/><input type="text" value="Last Name" name="last_name" required/><br/>
+                    <label>Email</label><br/><input type="text" value="Email" name="email" required/><br/>
+                    <label>Password</label><br/><input type="text" value="Age" name="password" required/><br/>
+                    <label>Age</label><br/><input type="number" value="Age" name="age" min="0" required/><br/>
+                    <label>Role</label><br/><select class="form-control" name="roles" id="sel1" multiple>
+                    <option>ADMIN</option>
+                    <option>USER</option>
+                </select><br/>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="updateForm">Edit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
