@@ -1,16 +1,22 @@
-
 .head{
-    height: 7%;
+    height: 65px;
     background: black;
     color: white;
 }
-.bodymain{
-    height: 93%;
 
+.row.head{
+    margin-left: 0;
+    padding-top: 10px;
 }
-.bodylinks{
+.row.bodymain{
+    height: 100%;
+}
+h5{
+    font-weight: normal;
+}
+.col-lg-2{
     background: white;
-    padding-top: 20px;
+    padding-top: 15px;
     padding-right:0;
 }
 
@@ -26,7 +32,7 @@ span{
     font-weight: normal;
 }
 
-.sm-10{
+.col-lg-11{
     padding-left: 40px;
 }
 .linkinside, .font-weight-bolder{
@@ -37,11 +43,7 @@ span{
     width: 100%;
     height: 50px;
 }
-.admin-page{
-    background: blue;
-    color: white;
-    padding-left: 3%;
-}
+
 .admin-page a{
     color: white;
 }
@@ -52,14 +54,15 @@ span{
     height: 50px;
     display: flex;
     align-items: center;
+    padding-left: 5%;
 }
-
-.main-table-div
-{
-    padding-top: 20px;
+table{
+    width: 94%!important;
 }
 .table{
     background: white;
+    font-size: 12pt;
+    margin: 15px 3%;
 }
 
 h5{
@@ -74,7 +77,45 @@ label{
     margin-bottom: 0;
     width: 100%;
 }
-form input{
+form input {
     margin-bottom: 20px;
-    margin-left: 32%;
+}
+form{
+    text-align: center;
+}
+
+.tab-content{
+    background: white;
+}
+.table-head{
+    background: rgba(0,0,0,.05);
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    padding-top: 10px;
+    border-bottom: 1px solid gainsboro;
+    margin-top: -24px;
+
+}
+.tab-content{
+    border: 1px solid gainsboro;
+}
+#home, #menu1{
+    padding: 0;
+}
+.bodylinks{
+    padding-right: 0!important;
+}
+
+#addForm input{
+    width: 350px;
+}
+#addForm select{
+    width: 350px;
+    margin-left: 34%;
+}
+#addForm{
+    margin-bottom:40px;
+    margin-top: 15px;
 }

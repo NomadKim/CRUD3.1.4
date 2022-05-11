@@ -10,10 +10,11 @@ import java.util.Set;
 @Table(name = "Users")
 public class User implements UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     private Long id;
-    @Id
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String email;
     @Column(name = "first_name")
     private String firstName;
@@ -100,7 +101,7 @@ public class User implements UserDetails {
         }
         if(roles.size() == 2){
             return "ADMIN, USER";
-        }else if(roles.toArray()[0] == "ROLE_ADMIN"){
+        }else if(roles.toArray()[0].toString().equals("ROLE_ADMIN")){
             return "ADMIN";
         }else {
             return "USER";

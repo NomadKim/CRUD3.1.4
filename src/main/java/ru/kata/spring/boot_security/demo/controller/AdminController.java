@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,10 +11,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserImplem;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -55,9 +51,11 @@ public class AdminController {
     public String fourthPage(Principal principal, HttpServletRequest httpServletRequest, ModelMap modelMap){
         User user = createUser(httpServletRequest);
         user.setId(Long.valueOf(httpServletRequest.getParameter("id")));
-
-            userImplem.update(user);
-
+        if(user.getPassword() == ""){
+            User userSecond = userImplem.getUserByUsername(user.getEmail());
+            user.setPassword(userSecond.getPassword());
+        }
+        userImplem.update(user);
         receiveModelForPage(principal, modelMap);
         return "admin";
     }
@@ -68,27 +66,27 @@ public class AdminController {
     }
 
     private User createUser(HttpServletRequest httpServletRequest){
-        Set<Role> roles = null;
+        Set<Role> roles;
         String[] rolesString = httpServletRequest.getParameterValues("roles");
         if(rolesString.length == 2){
             roles = userImplem.receiveRoles(3);
-        }else if(rolesString[0] == "USER"){
+        }else if(rolesString[0].equals("USER")){
             roles = userImplem.receiveRoles(2);
-        }else if(rolesString[0] == "ADMIN"){
+        }else if(rolesString[0].equals("ADMIN")){
             roles = userImplem.receiveRoles(1);
         } else {
             roles = userImplem.receiveRoles(2);
         }
-
-        String password = passwordEncoder.encode(httpServletRequest.getParameter("password"));
+        String password = "";
+        if(httpServletRequest.getParameter("password") != null){
+            passwordEncoder.encode(httpServletRequest.getParameter("password"));
+        }
         User user = new User(httpServletRequest.getParameter("first_name"),
                 httpServletRequest.getParameter("last_name"),
                 Integer.valueOf(httpServletRequest.getParameter("age")),
                 password,
                 roles,
                 httpServletRequest.getParameter("email"));
-        List<User> users = returnList();
-        user.setId(users.get(users.size()-1).getId() + 1);
         return user;
     }
 

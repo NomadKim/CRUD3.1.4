@@ -6,7 +6,7 @@
 <body>
 
 <div class="row head" th:fragment="logout (user, role)">
-    <div class="col-lg-11 sm-10 font-weight-bolder">
+    <div class="col-lg-11 font-weight-bolder">
         <h5 th:text="${user}">
         </h5>
         <h5><span>&nbsp;&nbsp;with roles:&nbsp;&nbsp; </span>
@@ -14,10 +14,10 @@
         <h5 th:text="${role}" class="roles">
         </h5>
     </div>
-    <div class="col-lg-1 sm-2 linkinside text-right"><h5><a href="/logout">Logout</a></h5></div>
+    <div class="col-lg-1 sm-2 linkinside text-right"><h6><a href="/logout">Logout</a></h6></div>
 </div>
 
-<div class="col-sm-2 bodylinks" th:fragment = "sidemenu (roles)" >
+<div class="col-lg-2 bodylinks" th:fragment = "sidemenu (roles)" >
     <div class="div-insede-side-menu" th:each = "role : ${roles}">
         <a href="/admin" th:if = "${role.getRole()} == 'ROLE_ADMIN'"><div class="admin-page pages" >Admin</div></a>
         <a href="/user" th:if = "${role.getRole()} == 'ROLE_USER'"><div class="user-page pages" >User</div></a>
