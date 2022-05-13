@@ -68,16 +68,18 @@ public class AdminController {
     private User createUser(HttpServletRequest httpServletRequest){
         Set<Role> roles;
         String[] rolesString = httpServletRequest.getParameterValues("roles");
-        if(rolesString.length == 2){
-            roles = userImplem.receiveRoles(3);
-        }else if(rolesString[0].equals("USER")){
+        if(rolesString == null){
             roles = userImplem.receiveRoles(2);
-        }else if(rolesString[0].equals("ADMIN")){
+        } else if (rolesString.length == 2){
+            roles = userImplem.receiveRoles(3);
+        } else if(rolesString[0].equals("USER")){
+            roles = userImplem.receiveRoles(2);
+        } else if(rolesString[0].equals("ADMIN")){
             roles = userImplem.receiveRoles(1);
-        } else {
+        } else{
             roles = userImplem.receiveRoles(2);
         }
-        String password = "";
+        String password = null;
         if(httpServletRequest.getParameter("password") != null){
             passwordEncoder.encode(httpServletRequest.getParameter("password"));
         }

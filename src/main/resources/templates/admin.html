@@ -11,14 +11,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
             function dataEditUser(userId){
-                let name = userId + "id";
-                var first = userId + "firstName";
-                let second = userId + "lastname";
-                let age = userId + "age";
-                let email = userId + "email";
-                var valueName = document.querySelector("#" + CSS.escape(first)).textContent;
-                console.log(valueName);
-                document.querySelector("form#updateForminput[name = 'first_name']").setAttribute("value", valueName);
+                var arrayOfIds = ["id", "first_name", "last_name", "age", "email"];
+                for (let i = 0; i < arrayOfIds.length; i++){
+                    addToEditData(userId + arrayOfIds[i], arrayOfIds[i]);
+                }
+            }
+            function addToEditData(readTextFromId, inputId){
+                let valueName = $("#" + readTextFromId).text();
+                document.querySelector("#updateForm input[name = '"+ inputId +"']").setAttribute("value", valueName);
             }
     </script>
 
@@ -77,8 +77,8 @@
                     <tbody>
                     <tr th:each = "tempUser : ${usersList}">
                         <td th:id="${tempUser.getId()} + 'id'" th:text="${tempUser.getId()}"/>
-                        <td th:id="${tempUser.getId()} + 'firstName'" th:text="${tempUser.getFirstName()}"/>
-                        <td th:id="${tempUser.getId()} + 'lastName'" th:text="${tempUser.getLastName()}"/>
+                        <td th:id="${tempUser.getId()} + 'first_name'" th:text="${tempUser.getFirstName()}"/>
+                        <td th:id="${tempUser.getId()} + 'last_name'" th:text="${tempUser.getLastName()}"/>
                         <td th:id="${tempUser.getId()} + 'email'" th:text="${tempUser.getEmail()}"/>
                         <td th:id="${tempUser.getId()} + 'roles'" th:text="${tempUser.stringOfRoles()}"/>
                         <td th:id="${tempUser.getId()} + 'age'" th:text="${tempUser.getAge()}"/>

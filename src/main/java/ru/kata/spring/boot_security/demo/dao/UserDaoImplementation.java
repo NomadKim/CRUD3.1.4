@@ -37,7 +37,9 @@ public class UserDaoImplementation implements UserDaoInterface {
         user2.setLastName(user.getLastName());
         user2.setEmail(user.getEmail());
         user2.setAge(user.getAge());
+        if (user.getPassword() != null) {
         user2.setPassword(user.getPassword());
+        }
         user2.setRoles(user.getRoles());
         entityManager.merge(user2);
     }

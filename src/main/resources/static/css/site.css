@@ -113,7 +113,7 @@ form{
 }
 #addForm select{
     width: 350px;
-    margin-left: 34%;
+    margin-left: calc((100% - 350px) / 2 );
 }
 #addForm{
     margin-bottom:40px;
