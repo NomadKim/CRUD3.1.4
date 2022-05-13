@@ -1,8 +1,10 @@
 function dataEditUser(userId){
-    let name = userId + "name";
-    let first = userId + "firstName";
-    let second = userId + "lastname";
-    let age = userId + "age";
-    let email = userId + "email";
-    $("input[name = first_name]").attr("value", $("td."+name).innerText);
+    var arrayOfIds = ["id", "first_name", "last_name", "age", "email"];
+    for (let i = 0; i < arrayOfIds.length; i++){
+        addToEditData(userId + arrayOfIds[i], arrayOfIds[i]);
+    }
+}
+function addToEditData(readTextFromId, inputId){
+    let valueName = $("#" + readTextFromId).text();
+    document.querySelector("#updateForm input[name = '"+ inputId +"']").setAttribute("value", valueName);
 }
