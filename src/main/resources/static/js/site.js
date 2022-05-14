@@ -10,6 +10,6 @@ function addToEditData(readTextFromId, inputId){
     document.querySelector("#updateForm input[name = '"+ inputId +"']").setAttribute("value", valueName);
 }
 
-function fadeModal(){
-    $("#myModal").fadeOut();
-}
+// function fadeModal(){
+//     $("#myModal").fadeOut();
+// }
