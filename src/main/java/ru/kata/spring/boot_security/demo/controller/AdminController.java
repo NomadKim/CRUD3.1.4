@@ -8,11 +8,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.HelpClass;
 import ru.kata.spring.boot_security.demo.service.UserImplem;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class AdminController {
@@ -60,10 +60,7 @@ public class AdminController {
         return "admin";
     }
 
-    public List<User> returnList(){
-        return userImplem.getListUsers().stream().sorted(Comparator.comparing(User::getId))
-                .collect(Collectors.toList());
-    }
+
 
     private User createUser(HttpServletRequest httpServletRequest){
         Set<Role> roles;
@@ -101,7 +98,7 @@ public class AdminController {
         } else {
             sendRoles.addAll(user.getRoles());
         }
-        modelMap.addAttribute("usersList", returnList());
+        modelMap.addAttribute("usersList", HelpClass.returnList(userImplem));
         modelMap.addAttribute("username", principal.getName());
         modelMap.addAttribute("roles", user.stringOfRoles());
         modelMap.addAttribute("sidemenuroles", sendRoles);
