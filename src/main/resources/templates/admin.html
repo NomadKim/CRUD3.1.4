@@ -39,7 +39,7 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#home">Users table</a>
+                <a class="nav-link active" data-toggle="tab" href="#home" id="firstTabLink">Users table</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#menu1">New User</a>
@@ -64,7 +64,7 @@
                     <th>Delete</th>
                     </thead>
                     <tbody>
-                    <tr th:each = "tempUser : ${usersList}">
+                    <tr th:each = "tempUser : ${usersList}" th:id="${tempUser.getId()}">
                         <td th:id="${tempUser.getId()} + 'id'" th:text="${tempUser.getId()}"/>
                         <td th:id="${tempUser.getId()} + 'first_name'" th:text="${tempUser.getFirstName()}"/>
                         <td th:id="${tempUser.getId()} + 'last_name'" th:text="${tempUser.getLastName()}"/>
@@ -76,14 +76,12 @@
                                     class="btn btn-info" data-toggle="modal" data-target="#myModal">
                                 Edit
                             </button>
-<!--                            <button onclick="dataEditUser(this.id)" th:id="${tempUser.getId()}" class="btn btn-info">-->
-<!--                                Edit-->
-<!--                            </button>-->
                         </td>
                         <td>
-                            <form th:action="'/admin/delete/' + ${tempUser.getId()}">
-                                <button class="btn btn-danger">Delete</button>
-                            </form>
+                            <button th:onclick="'deleteUserButton(' + ${tempUser.getId()} + ')'"
+                                    class="btn btn-danger">
+                                Delete
+                            </button>
                         </td>
 
                     </tr>
@@ -92,7 +90,7 @@
             </div>
             <div id="menu1" class="container tab-pane fade"><br>
                 <div class="table-head"><h5>Add new user</h5></div>
-                <form id="addForm" action="/admin/add" method="post">
+                <form id="addForm">
                     <label>First name</label><br/><input type="text" value="First Name" name="first_name" required/><br/>
                     <label>Last name</label><br/><input type="text" value="Last Name" name="last_name" required/><br/>
                     <label>Email</label><br/><input type="email" value="Email" name="email" required/><br/>
@@ -102,14 +100,12 @@
                     <option>ADMIN</option>
                     <option>USER</option>
                 </select><br/>
-                    <button class="btn btn-success">Add new user</button>
+                    <button type="submit" id="addFormButton" class="btn btn-success">Add new user</button>
                 </form>
             </div>
         </div>
     </div>
     <div th:replace="fragment/modal :: modalView"></div>
-
-
 
 </div>
 </body>
