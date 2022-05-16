@@ -1,5 +1,6 @@
 window.onload=function(){
     document.getElementById('addForm').addEventListener('submit', addUserButton);
+    document.getElementById('updateForm').addEventListener('submit', updateUserButton);
 }
 
 function dataEditUser(userId){
@@ -7,17 +8,13 @@ function dataEditUser(userId){
     for (let i = 0; i < arrayOfIds.length; i++){
         addToEditData(userId + arrayOfIds[i], arrayOfIds[i]);
     }
-    // $("#myModal").fadeIn();
 }
+
 function addToEditData(readTextFromId, inputId){
     let valueName = $("#" + readTextFromId).text();
     document.querySelector("#updateForm input[name = '"+ inputId +"']").setAttribute("value", valueName);
 }
 
-
-// function fadeModal(){
-//     $("#myModal").fadeOut();
-// }
 let urlData = "/admin/users/";
 async function addUser(url, data, method){
     return await fetch(url,{
@@ -45,7 +42,7 @@ function addUserButton(event){
 
         if(datas['roles'].length == 2){
             roleString = "ADMIN, USER";
-        } else if(datas['roles'][0] == "ROLE_ADMIN"){
+        } else if(datas['roles'][0]['role'] == "ROLE_ADMIN"){
             roleString = "ADMIN";
         } else {
             roleString = "USER";
@@ -62,7 +59,15 @@ function addUserButton(event){
         "<td> <button onclick='deleteUserButton(" + datas['id'] + ")' class='btn btn-danger'>"+
                 "Delete </button> </td> </tr>"
         $("tbody").append(addTr);
-        console.log(datas);
+        $("#addForm input[name = 'first_name']").val("First Name");
+        $("#addForm input[name = 'last_name']").val("Last Name");
+        $("#addForm input[name = 'age']").val("1");
+        $("#addForm input[name = 'password']").val("");
+        $("#addForm select[name = 'roles']").val("");
+        $("#addForm input[name = 'email']").val("Email");
+        alert("Пользователь добавлен");
+
+        //добавить переход на таюлицу
     });
 }
 
@@ -72,6 +77,37 @@ function deleteUserButton(userId){
         if (responce.status == 200){
             $("tr#" + userId).remove();
         }
+    });
+}
+
+function updateUserButton(event){
+    event.preventDefault();
+    let userToAdd = {};
+    userToAdd["id"] = $("#updateForm input[name = 'id']").val();
+    userToAdd["firstName"] = $("#updateForm input[name = 'first_name']").val();
+    userToAdd["lastName"] = $("#updateForm input[name = 'last_name']").val();
+    userToAdd["age"] = $("#updateForm input[name = 'age']").val();
+    userToAdd["password"] = $("#updateForm input[name = 'password']").val();
+    userToAdd["roles"] = $("#updateForm select[name = 'roles']").val();
+    userToAdd["email"] = $("#updateForm input[name = 'email']").val();
+    addUser(urlData, userToAdd, 'PUT').then((response) => {
+        return response.json();
+    }).then((datas)=>{
+        let roleString;
+        let id = datas[id];
+        if(datas['roles'].length == 2){
+            roleString = "ADMIN, USER";
+        } else if(datas['roles'][0]['role'] == "ROLE_ADMIN"){
+            roleString = "ADMIN";
+        } else {
+            roleString = "USER";
+        }
+        //update table
+        $("tr#" + id);
+        console.log(datas);
+        alert("Пользователь обновлен");
+
+        //добавить переход на таюлицу
     });
 }
 
