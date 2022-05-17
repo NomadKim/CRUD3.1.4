@@ -30,7 +30,7 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/admin/delete/{id}")
+    @PostMapping("/admin/delete/{id}")
     public String secondPage(Principal principal, @PathVariable String id,
                              ModelMap modelMap){
         Long mainId = Long.valueOf(id);

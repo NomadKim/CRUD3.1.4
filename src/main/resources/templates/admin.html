@@ -72,16 +72,16 @@
 <!--                        <td th:id="${tempUser.getId()} + 'roles'" th:text="${tempUser.stringOfRoles()}"/>-->
 <!--                        <td th:id="${tempUser.getId()} + 'age'" th:text="${tempUser.getAge()}"/>-->
 <!--                        <td>-->
-<!--                            <button onclick="dataEditUser(this.id)" th:id="${tempUser.getId()}"-->
+<!--                            <button onclick="dataEditUser(this.id, 'UPDATE')" th:id="${tempUser.getId()}"-->
 <!--                                    class="btn btn-info" data-toggle="modal" data-target="#myModal">-->
 <!--                                Edit-->
 <!--                            </button>-->
 <!--                        </td>-->
 <!--                        <td>-->
-<!--                            <button th:onclick="'deleteUserButton(' + ${tempUser.getId()} + ')'"-->
-<!--                                    class="btn btn-danger">-->
-<!--                                Delete-->
-<!--                            </button>-->
+<!--                            <button onclick="dataEditUser(this.id, 'DELETE')" th:id="${tempUser.getId()}"
+                                    class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                                    Delete
+                            </button>
 <!--                        </td>-->
 
 <!--                    </tr>-->

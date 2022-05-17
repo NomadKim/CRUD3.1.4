@@ -2,7 +2,7 @@ var urlData = "/admin/users/";
 
 window.onload=function(){
     document.getElementById('addForm').addEventListener('submit', addUserButton);
-    document.getElementById('updateForm').addEventListener('submit', updateUserButton);
+    // document.getElementById('updateForm').addEventListener('submit', updateUserButton);
 
     sendFetchRequest(urlData, undefined, "GET").then((responce)=>{
         return responce.json();
@@ -24,14 +24,14 @@ window.onload=function(){
                 "<td id='"+ datas[i]['id'] + "roles'>" + roleString + "</td>"+
                 "<td id='"+ datas[i]['id'] + "age'>" + datas[i]['age'] + "</td>"+
                 "<td>"+
-                    "<button onClick='dataEditUser(this.id)' id='" + datas[i]['id'] +"'"+
+                    "<button onClick='dataEditUser(this.id, \"UPDATE\")' id='" + datas[i]['id'] +"'"+
                             "class='btn btn-info' data-toggle='modal' data-target='#myModal'>"+
                         "Edit"+
                     "</button>"+
                 "</td>"+
                 "<td>" +
-                    "<button onclick='deleteUserButton(" + datas[i]['id'] + ")'"+
-                            "class='btn btn-danger'>"+
+                    "<button onClick='dataEditUser(this.id, \"DELETE\")' id='" + datas[i]['id'] +"'"+
+                            "class='btn btn-danger' data-toggle=\"modal\" data-target=\"#myModal\">"+
                         "Delete"+
                     "</button>"+
                 "</td>"+
@@ -41,14 +41,21 @@ window.onload=function(){
     });
 }
 
+
+
 function dataEditUser(userId, actionOfUser){
     let arrayOfIds = ["id", "first_name", "last_name", "age", "email"];
     for (let i = 0; i < arrayOfIds.length; i++){
         addToEditData(userId + arrayOfIds[i], arrayOfIds[i]);
     }
-    //добавить проверку
-    if(actionOfUser == "UPDATE"){
-
+    if(actionOfUser == "DELETE"){
+        $("button.btn-primary").text("Delete");
+        $(".btn-primary").attr("onclick", "deleteUserButton(" + userId + ")'")
+        // document.getElementById('updateForm').addEventListener('submit', deleteUserButton(userId));
+    } else {
+        $("button.btn-primary").text("Edit");
+        $(".btn-primary").attr("onclick", "updateUserButton")
+        // document.getElementById('updateForm').addEventListener('submit', updateUserButton);
     }
 }
 

@@ -16,7 +16,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form id="updateForm" action="/admin/update" method="post">
+                <form id="updateForm" method="post">
                     <label>ID</label><br/><input type="number" value="1" name="id" min="1" required/>
                     <label>First name</label><br/><input type="text" name="first_name" required/><br/>
                     <label>Last name</label><br/><input type="text" value="Last Name" name="last_name" required/><br/>
@@ -32,9 +32,9 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 <!--              привязать к кнопке убрать экран-->
-                <button type="submit" class="btn btn-primary" form="updateForm">Edit</button>
+                <button type="button" class="btn btn-primary">Edit</button>
             </div>
 
         </div>
