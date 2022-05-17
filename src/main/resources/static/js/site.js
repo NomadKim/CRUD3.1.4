@@ -50,12 +50,17 @@ function dataEditUser(userId, actionOfUser){
     }
     if(actionOfUser == "DELETE"){
         $("button.btn-primary").text("Delete");
-        $(".btn-primary").attr("onclick", "deleteUserButton(" + userId + ")'")
-        // document.getElementById('updateForm').addEventListener('submit', deleteUserButton(userId));
+        $("button.btn-primary").attr("onclick", "deleteUserButton(" + userId + ")");
+        $("span.password").remove();
+
     } else {
         $("button.btn-primary").text("Edit");
-        $(".btn-primary").attr("onclick", "updateUserButton")
-        // document.getElementById('updateForm').addEventListener('submit', updateUserButton);
+        $("button.btn-primary").attr("onclick", "updateUserButton()")
+        if($("span.password").length == 0){
+            $("span.email").after("<span class=\"password\"><label>Password</label><br/><input type=\"password\""+
+                "name=\"password\"/><br/>"+
+                "</span>");
+        }
     }
 }
 
@@ -129,8 +134,7 @@ function deleteUserButton(userId){
     });
 }
 
-function updateUserButton(event){
-    event.preventDefault();
+function updateUserButton(){
     let userToAdd = {};
     userToAdd["id"] = $("#updateForm input[name = 'id']").val();
     userToAdd["firstName"] = $("#updateForm input[name = 'first_name']").val();
@@ -144,7 +148,6 @@ function updateUserButton(event){
     }).then((datas)=>{
         console.log(datas);
         let roleString;
-        let id = datas['id'];
         if(datas['roles'].length == 2){
             roleString = "ADMIN, USER";
         } else if(datas['roles'][0]['role'] == "ROLE_ADMIN"){
@@ -153,11 +156,11 @@ function updateUserButton(event){
             roleString = "USER";
         }
 
-        $("tr#" + id + " td#" + id + "first_name").val(datas["firstName"]);
-        $("tr#" + id + " td#" + id + "last_name").val(datas["lastName"]);
-        $("tr#" + id + " td#" + id + "age").val(datas["age"]);
-        $("tr#" + id + " td#" + id + "roles").val(roleString);
-        $("tr#" + id + " td#" + id + "email").val(datas["email"]);
+        $("td#" + datas['id'] + "first_name").text(datas['firstName']);
+        $("td#" + datas['id'] + "last_name").text(datas['lastName']);
+        $("td#" + datas['id'] + "age").text(datas['age']);
+        $("td#" + datas['id'] + "roles").text(roleString);
+        $("td#" + datas['id'] + "email").text(datas['email']);
 
         // alert("Пользователь обновлен");
         //добавить переход на таюлицу
