@@ -24,23 +24,10 @@ public class RestController {
     public List<User> getUsers(){
         return HelpClass.returnList(userImplem);
     }
+
     @PostMapping("/")
     public User addUser(@RequestBody User user){
-        List<Role> usersList = new ArrayList<>();
-        if (user.getRoles().size() != 0){
-            usersList.addAll(user.getRoles());
-        }
-        if(user.getRoles().size() == 0){
-            user.setRoles(userImplem.receiveRoles(2));
-        } else if (user.getRoles().size() == 2){
-            user.setRoles(userImplem.receiveRoles(3));
-        } else if(usersList.get(0).getRole().equals("USER")){
-            user.setRoles(userImplem.receiveRoles(2));
-        } else if(usersList.get(0).getRole().equals("ADMIN")){
-            user.setRoles(userImplem.receiveRoles(1));
-        } else{
-            user.setRoles(userImplem.receiveRoles(2));
-        }
+        setRolesToReceivedUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userImplem.add(user);
         User userTosend = userImplem.getUserByUsername(user.getEmail());
@@ -49,21 +36,7 @@ public class RestController {
 
     @PutMapping("/")
     public User updateUser(@RequestBody User user){
-        List<Role> usersList = new ArrayList<>();
-        if (user.getRoles().size() != 0){
-            usersList.addAll(user.getRoles());
-        }
-        if(user.getRoles().size() == 0){
-            user.setRoles(userImplem.receiveRoles(2));
-        } else if (user.getRoles().size() == 2){
-            user.setRoles(userImplem.receiveRoles(3));
-        } else if(usersList.get(0).getRole().equals("USER")){
-            user.setRoles(userImplem.receiveRoles(2));
-        } else if(usersList.get(0).getRole().equals("ADMIN")){
-            user.setRoles(userImplem.receiveRoles(1));
-        } else{
-            user.setRoles(userImplem.receiveRoles(2));
-        }
+        setRolesToReceivedUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userImplem.update(user);
         User userTosend = userImplem.getUserByUsername(user.getEmail());
@@ -75,8 +48,22 @@ public class RestController {
         userImplem.delete(Long.valueOf(id));
     }
 
-    public User createUser(User user){
-        return null;
 
+    private void setRolesToReceivedUser(User user){
+        List<Role> usersList = new ArrayList<>();
+        if (user.getRoles().size() != 0){
+            usersList.addAll(user.getRoles());
+        }
+        if(user.getRoles().size() == 0){
+            user.setRoles(userImplem.receiveRoles(2));
+        } else if (user.getRoles().size() == 2){
+            user.setRoles(userImplem.receiveRoles(3));
+        } else if(usersList.get(0).getRole().equals("USER")){
+            user.setRoles(userImplem.receiveRoles(2));
+        } else if(usersList.get(0).getRole().equals("ADMIN")){
+            user.setRoles(userImplem.receiveRoles(1));
+        } else{
+            user.setRoles(userImplem.receiveRoles(2));
+        }
     }
 }
