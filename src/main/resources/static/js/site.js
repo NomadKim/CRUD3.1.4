@@ -1,8 +1,15 @@
 var urlData = "/admin/users/";
 
+//добавить переходы на таблицы с диалоговых окон и таб
+
 window.onload=function(){
-    document.getElementById('addForm').addEventListener('submit', addUserButton);
-    // document.getElementById('updateForm').addEventListener('submit', updateUserButton);
+    $("#addForm").submit( addUserButton);
+    $("#addFormButton").click(function (){
+        $("#firstTabLink").trigger("click");
+    });
+    $(".btn-primary").click(function (){
+        $(".btn-secondary").trigger("click");
+    });
 
     sendFetchRequest(urlData, undefined, "GET").then((responce)=>{
         return responce.json();
@@ -40,8 +47,6 @@ window.onload=function(){
         }
     });
 }
-
-
 
 function dataEditUser(userId, actionOfUser){
     let arrayOfIds = ["id", "first_name", "last_name", "age", "email"];
@@ -119,8 +124,6 @@ function addUserButton(event){
         $("#addForm select[name = 'roles']").val("");
         $("#addForm input[name = 'email']").val("Email");
         alert("Пользователь добавлен");
-
-        //добавить переход на таюлицу
     });
 }
 
@@ -130,6 +133,7 @@ function deleteUserButton(userId){
     sendFetchRequest(deleteUrl, undefined, 'DELETE').then((responce) => {
         if (responce.status == 200){
             $("tr#" + userId).remove();
+            alert("Пользователь удален")
         }
     });
 }
@@ -146,7 +150,6 @@ function updateUserButton(){
     sendFetchRequest(urlData, userToAdd, 'PUT').then((response) => {
         return response.json();
     }).then((datas)=>{
-        console.log(datas);
         let roleString;
         if(datas['roles'].length == 2){
             roleString = "ADMIN, USER";
@@ -162,8 +165,8 @@ function updateUserButton(){
         $("td#" + datas['id'] + "roles").text(roleString);
         $("td#" + datas['id'] + "email").text(datas['email']);
 
-        // alert("Пользователь обновлен");
-        //добавить переход на таюлицу
+        alert("Пользователь обновлен");
+
     });
 }
 

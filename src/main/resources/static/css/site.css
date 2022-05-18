@@ -77,7 +77,7 @@ label{
     margin-bottom: 0;
     width: 100%;
 }
-#addForm input {
+form input {
     margin-bottom: 20px;
 }
 form{
