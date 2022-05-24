@@ -28,7 +28,8 @@ public class RestController {
     @PostMapping("/")
     public User addUser(@RequestBody User user){
         setRolesToReceivedUser(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
         userImplem.add(user);
         User userTosend = userImplem.getUserByUsername(user.getEmail());
         return userTosend;
@@ -37,7 +38,10 @@ public class RestController {
     @PutMapping("/")
     public User updateUser(@RequestBody User user){
         setRolesToReceivedUser(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != "" || user.getPassword() != ""){
+            String password = passwordEncoder.encode(user.getPassword());
+            user.setPassword(password);
+        }
         userImplem.update(user);
         User userTosend = userImplem.getUserByUsername(user.getEmail());
         return userTosend;
@@ -62,7 +66,7 @@ public class RestController {
             user.setRoles(userImplem.receiveRoles(2));
         } else if(usersList.get(0).getRole().equals("ADMIN")){
             user.setRoles(userImplem.receiveRoles(1));
-        } else{
+        } else {
             user.setRoles(userImplem.receiveRoles(2));
         }
     }
